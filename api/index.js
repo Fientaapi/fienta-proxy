@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   const organizerId = process.env.FIENTA_ORGANIZER_ID;
 
-  const resp = await fetch(`https://fienta.com/api/v1/public/events?organizer=32694`);
+  const resp = await fetch(`https://fienta.com/api/v1/public/events?organizer=${organizerId}`);
   if (!resp.ok) {
     const error = await resp.json();
     return res.status(resp.status).json({ error });
