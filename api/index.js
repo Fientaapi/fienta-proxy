@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const apiKey = process.env.6b9c99327de86e3a69ca478ed818c3f0;
+  const apiKey = process.env.FIENTA_API_KEY;
 
   const response = await fetch("https://fienta.com/api/events", {
     headers: {
