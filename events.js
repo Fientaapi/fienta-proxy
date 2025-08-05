@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("events-list");
 
-  fetch("https://fienta-proxy-duhf7jcq9-fientaapis-projects.vercel.app/api")
+  fetch("https://fienta-proxy-fientaapis-projects.vercel.app/api")
     .then(res => res.json())
     .then(data => {
       if (!data.events || data.events.length === 0) {
