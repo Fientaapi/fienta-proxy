@@ -74,8 +74,25 @@
   background-color: #e85c50;
 }
 
-.event-description {
+.event-description-wrapper {
   margin-top: 10px;
+}
+
+.event-description-toggle {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 14px;
+  padding: 0;
+  cursor: pointer;
+  margin-bottom: 5px;
+  text-decoration: underline;
+}
+
+.event-description {
   font-size: 14px;
   color: #444;
+  margin-top: 5px;
+  display: none;
 }
+
