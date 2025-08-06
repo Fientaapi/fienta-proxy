@@ -47,10 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
         date.className = "event-date";
         date.textContent = formattedDate;
 
-const venue = document.createElement("div");
-  venue.className = "event-venue";
-  venue.textContent = event.venue || "";
-        
+        const venue = document.createElement("div");
+        venue.className = "event-venue";
+        venue.textContent = event.venue || "";
+
         const linkWrap = document.createElement("div");
         linkWrap.className = "event-link";
         const link = document.createElement("a");
@@ -85,6 +85,7 @@ const venue = document.createElement("div");
         // Poskládat vše dohromady
         content.appendChild(title);
         content.appendChild(date);
+        if (event.venue) content.appendChild(venue);
         content.appendChild(linkWrap);
         if (event.description) content.appendChild(descriptionWrapper);
 
@@ -100,4 +101,4 @@ const venue = document.createElement("div");
     });
 });
 
-console.log("version 45");
+console.log("version 46"); // potvrzení verze pro cache bust
