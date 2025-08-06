@@ -47,6 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
         date.className = "event-date";
         date.textContent = formattedDate;
 
+const venue = document.createElement("div");
+  venue.className = "event-venue";
+  venue.textContent = event.venue || "";
+        
         const linkWrap = document.createElement("div");
         linkWrap.className = "event-link";
         const link = document.createElement("a");
