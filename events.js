@@ -16,61 +16,66 @@ document.addEventListener("DOMContentLoaded", () => {
       container.innerHTML = "";
 
       data.events.forEach((event) => {
-        const eventDate = new Date(event.starts_at);
-        const formattedDate = eventDate.toLocaleString("cs-CZ", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+  const eventDate = new Date(event.starts_at);
+  const formattedDate = eventDate.toLocaleString("cs-CZ", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-        const card = document.createElement("div");
-        card.className = "event-card";
+  const card = document.createElement("div");
+  card.className = "event-card";
 
-        const img = document.createElement("img");
-        img.className = "event-image";
-        img.src = event.image_url || "https://via.placeholder.com/280x160?text=Bez+obrázku";
-        img.alt = event.title;
+  const img = document.createElement("img");
+  img.className = "event-image";
+  img.src = event.image_url || "https://via.placeholder.com/280x160?text=Bez+obrázku";
+  img.alt = event.title;
 
-        const content = document.createElement("div");
-        content.className = "event-content";
+  const content = document.createElement("div");
+  content.className = "event-content";
 
-        const title = document.createElement("a");
-        title.className = "event-title";
-        title.href = event.url;
-        title.target = "_blank";
-        title.rel = "noopener noreferrer";
-        title.textContent = event.title;
+  const title = document.createElement("a");
+  title.className = "event-title";
+  title.href = event.url;
+  title.target = "_blank";
+  title.rel = "noopener noreferrer";
+  title.textContent = event.title;
 
-        const date = document.createElement("div");
-        date.className = "event-date";
-        date.textContent = formattedDate;
+  const date = document.createElement("div");
+  date.className = "event-date";
+  date.textContent = formattedDate;
 
-        const venue = document.createElement("div");
-        venue.className = "event-venue";
-        venue.textContent = event.venue || "";
+  const venue = document.createElement("div");
+  venue.className = "event-venue";
+  venue.textContent = event.venue || "";
 
-        const linkWrap = document.createElement("div");
-        linkWrap.className = "event-link";
-        const link = document.createElement("a");
-        link.href = event.buy_tickets_url || event.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = "Koupit vstupenku";
+  const description = document.createElement("div");
+  description.className = "event-description";
+  description.innerHTML = event.description || "";
 
-        linkWrap.appendChild(link);
+  const linkWrap = document.createElement("div");
+  linkWrap.className = "event-link";
+  const link = document.createElement("a");
+  link.href = event.buy_tickets_url || event.url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "Koupit vstupenku";
 
-        content.appendChild(title);
-        content.appendChild(date);
-        if (venue.textContent) content.appendChild(venue);
-        content.appendChild(linkWrap);
+  linkWrap.appendChild(link);
 
-        card.appendChild(img);
-        card.appendChild(content);
+  content.appendChild(title);
+  content.appendChild(date);
+  if (venue.textContent) content.appendChild(venue);
+  if (event.description) content.appendChild(description);
+  content.appendChild(linkWrap);
 
-        container.appendChild(card);
-      });
+  card.appendChild(img);
+  card.appendChild(content);
+
+  container.appendChild(card);
+});
     })
     .catch((err) => {
       container.innerHTML = `<p>Chyba při načítání akcí: ${err.message}</p>`;
