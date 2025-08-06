@@ -8,15 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return res.json();
     })
     .then((data) => {
-      if (!data || !data.data || data.data.length === 0) {
+      if (!data || !data.events || data.events.length === 0) {
         container.innerHTML = "<p>Žádné akce nebyly nalezeny.</p>";
         return;
       }
 
       container.innerHTML = ""; // Vymazat načítací hlášku
 
-      data.data.forEach((event) => {
-        const eventDate = new Date(event.start_date);
+      data.events.forEach((event) => {
+        const eventDate = new Date(event.starts_at);
         const formattedDate = eventDate.toLocaleString("cs-CZ", {
           day: "2-digit",
           month: "long",
@@ -95,5 +95,5 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
     });
 });
-console.log("version 44"); // test cache bust
 
+console.log("version 45");
