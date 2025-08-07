@@ -61,7 +61,7 @@
 
 .event-link a {
   background-color: #ff6f6100;
-  color: white;
+  color: #eedddd !important;
   text-decoration: none;
   padding: 10px 16px;
   border-radius: 4px;
@@ -72,7 +72,8 @@
 }
 
 .event-link a:hover {
-  background-color: #e85c50;
+  background-color: #eedddd;
+  color: #000;
 }
 
 .event-description-wrapper {
