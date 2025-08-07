@@ -64,23 +64,6 @@
   text-align: center;
 }
 
-.event-link a {
-  background-color: #cb9f74;
-  color: #191919 !important;
-  text-decoration: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 600;
-  display: inline-block;
-  transition: background-color 0.3s ease;
-  font-family: 'TildaSans';
-}
-
-.event-link a:hover {
-  background-color: #eedddd;
-  color: #000 !important;
-}
-
 .event-description-wrapper {
   margin-top: 10px;
 }
@@ -130,7 +113,6 @@
   border-color: transparent;
   border-style: solid;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-
   padding: 8px 16px;
   text-decoration: none;
   cursor: pointer;
@@ -138,5 +120,5 @@
 
 .event-buttons a:hover,
 .event-buttons button:hover {
-  background-color: #b58b63; /* чуть темнее при наведении */
+  background-color: #b58b63;
 }
