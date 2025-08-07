@@ -46,7 +46,7 @@
   font-size: 18px;
   font-weight: 700;
   margin: 0 0 8px;
-  color: #eedddd !important;
+  color: #cb9f74 !important;
   text-decoration: none;
   font-family: 'TildaSans';
   text-transform: uppercase;
@@ -104,7 +104,7 @@
 
 .event-buttons a:hover,
 .event-buttons button:hover {
-  background-color: #eedddd;
+  background-color: #eedddd !important;
 }
 
 .event-buttons a,
