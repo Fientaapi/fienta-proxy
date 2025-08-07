@@ -73,7 +73,7 @@
 
 .event-link a:hover {
   background-color: #eedddd;
-  color: #000;
+  color: #000 !important;
 }
 
 .event-description-wrapper {
