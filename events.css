@@ -60,7 +60,7 @@
 }
 
 .event-link a {
-  background-color: #ff6f61;
+  background-color: #ff6f6100;
   color: white;
   text-decoration: none;
   padding: 10px 16px;
@@ -68,6 +68,7 @@
   font-weight: 600;
   display: inline-block;
   transition: background-color 0.3s ease;
+  border: 1px solid #eedddd;
 }
 
 .event-link a:hover {
