@@ -46,12 +46,15 @@
   margin: 0 0 8px;
   color: #eedddd !important;
   text-decoration: none;
+  font-family: 'TildaSans';
+  text-transform: uppercase;
 }
 
 .event-date {
   font-size: 14px;
   color: #eedddd;
   margin-bottom: 12px;
+  font-family: 'TildaSans';
 }
 
 .event-link {
@@ -69,6 +72,7 @@
   display: inline-block;
   transition: background-color 0.3s ease;
   border: 1px solid #eedddd;
+  font-family: 'TildaSans';
 }
 
 .event-link a:hover {
@@ -96,8 +100,10 @@
   color: #eedddd;
   margin-top: 5px;
   display: none;
+  font-family: 'TildaSans';
 }
 
 .event-venue {
   color: #eedddd;
+  font-family: 'TildaSans';
 }
