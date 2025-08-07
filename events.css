@@ -85,13 +85,13 @@
 
 .event-buttons a,
 .event-buttons button {
-  color: #131313;
+  color: #000 !important;
   font-size: 12px;
   font-family: 'TildaSans', Arial, sans-serif;
   line-height: 1.55;
   font-weight: 700;
   text-transform: uppercase;
-  border-radius: 15px;
+  border-radius: 10px;
   background-color: #cb9f74;
   background-position: center center;
   border-color: transparent;
