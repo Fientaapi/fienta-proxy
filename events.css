@@ -106,3 +106,17 @@
 .event-buttons button:hover {
   background-color: #b58b63;
 }
+
+.event-buttons a,
+.event-buttons button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  border-width: 0;
+}
