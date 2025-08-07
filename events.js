@@ -87,9 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
         content.appendChild(title);
         content.appendChild(date);
         content.appendChild(venue);
-        content.appendChild(linkWrap);
         if (event.description) content.appendChild(descriptionWrapper);
-
+content.appendChild(linkWrap);
         card.appendChild(img);
         card.appendChild(content);
 
