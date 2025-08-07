@@ -9,13 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       const events = data.events;
-
       if (!events || events.length === 0) {
         container.innerHTML = "<p>Žádné akce nebyly nalezeny.</p>";
         return;
       }
 
-      container.innerHTML = "";
+      container.innerHTML = ""; // Vymazat načítací hlášku
 
       events.forEach((event) => {
         const eventDate = new Date(event.starts_at);
@@ -53,42 +52,45 @@ document.addEventListener("DOMContentLoaded", () => {
         venue.className = "event-venue";
         venue.textContent = event.venue;
 
-        const linkWrap = document.createElement("div");
-        linkWrap.className = "event-link";
-
-        const link = document.createElement("a");
-        link.href = event.url;
-        link.setAttribute("data-fienta-popup", event.url);
-        link.textContent = "Koupit vstupenku";
-
-        linkWrap.appendChild(link);
-
         const descriptionWrapper = document.createElement("div");
         descriptionWrapper.className = "event-description-wrapper";
-
-        const descriptionToggle = document.createElement("button");
-        descriptionToggle.className = "event-description-toggle";
-        descriptionToggle.textContent = "Zobrazit více";
 
         const description = document.createElement("div");
         description.className = "event-description";
         description.innerHTML = event.description || "";
         description.style.display = "none";
+        descriptionWrapper.appendChild(description);
 
+        const buttonsWrapper = document.createElement("div");
+        buttonsWrapper.className = "event-buttons";
+
+        const descriptionToggle = document.createElement("button");
+        descriptionToggle.className = "event-description-toggle";
+        descriptionToggle.textContent = "Zobrazit více";
         descriptionToggle.addEventListener("click", () => {
           const isVisible = description.style.display === "block";
           description.style.display = isVisible ? "none" : "block";
           descriptionToggle.textContent = isVisible ? "Zobrazit více" : "Skrýt";
         });
 
-        descriptionWrapper.appendChild(descriptionToggle);
-        descriptionWrapper.appendChild(description);
+        const ticketButton = document.createElement("a");
+        ticketButton.className = "event-buy-button";
+        ticketButton.href = event.url;
+        ticketButton.target = "_blank";
+        ticketButton.rel = "noopener noreferrer";
+        ticketButton.setAttribute("data-fienta-popup", event.url);
+        ticketButton.textContent = "Koupit vstupenku";
+
+        buttonsWrapper.appendChild(descriptionToggle);
+        buttonsWrapper.appendChild(ticketButton);
 
         content.appendChild(title);
         content.appendChild(date);
         content.appendChild(venue);
         if (event.description) content.appendChild(descriptionWrapper);
-content.appendChild(linkWrap);
+        content.appendChild(buttonsWrapper);
+
+        // Финальный card
         card.appendChild(img);
         card.appendChild(content);
 
@@ -100,5 +102,3 @@ content.appendChild(linkWrap);
       console.error(err);
     });
 });
-
-console.log("✅ events.js loaded with popup support");
