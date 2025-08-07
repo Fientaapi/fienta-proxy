@@ -8,14 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return res.json();
     })
     .then((data) => {
-      if (!data || !data.events || data.events.length === 0) {
+      const events = data.events;
+
+      if (!events || events.length === 0) {
         container.innerHTML = "<p>Žádné akce nebyly nalezeny.</p>";
         return;
       }
 
-      container.innerHTML = ""; // Vymazat načítací hlášku
+      container.innerHTML = "";
 
-      data.events.forEach((event) => {
+      events.forEach((event) => {
         const eventDate = new Date(event.starts_at);
         const formattedDate = eventDate.toLocaleString("cs-CZ", {
           day: "2-digit",
@@ -49,9 +51,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const venue = document.createElement("div");
         venue.className = "event-venue";
-        venue.textContent = event.venue || "";
+        venue.textContent = event.venue;
 
-        // Popis – skrytý на začátku
+        const linkWrap = document.createElement("div");
+        linkWrap.className = "event-link";
+
+        const link = document.createElement("a");
+        link.href = event.url;
+        link.setAttribute("data-fienta-popup", event.url);
+        link.textContent = "Koupit vstupenku";
+
+        linkWrap.appendChild(link);
+
         const descriptionWrapper = document.createElement("div");
         descriptionWrapper.className = "event-description-wrapper";
 
@@ -73,29 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
         descriptionWrapper.appendChild(descriptionToggle);
         descriptionWrapper.appendChild(description);
 
-        // Кнопка покупки через Fienta popup
-        const linkWrap = document.createElement("div");
-        linkWrap.className = "event-link";
-
-        const link = document.createElement("a");
-        link.href = "#";
-        link.textContent = "Koupit vstupenku";
-        link.setAttribute("data-fienta-popup", event.url);
-        link.addEventListener("click", (e) => {
-          e.preventDefault(); // Предотвратить переход по ссылке
-        });
-
-        linkWrap.appendChild(link);
-
-        // Сборка блока мероприятия
         content.appendChild(title);
         content.appendChild(date);
-        if (event.venue) content.appendChild(venue);
-        if (event.description) content.appendChild(descriptionWrapper);
+        content.appendChild(venue);
         content.appendChild(linkWrap);
+        if (event.description) content.appendChild(descriptionWrapper);
 
         card.appendChild(img);
         card.appendChild(content);
+
         container.appendChild(card);
       });
     })
@@ -105,4 +102,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-console.log("Fienta Events Script Loaded ✅");
+console.log("✅ events.js loaded with popup support");
