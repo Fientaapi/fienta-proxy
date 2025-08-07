@@ -60,7 +60,6 @@
 }
 
 .event-link {
-  margin-top: auto;
   text-align: center;
 }
 
@@ -68,16 +67,7 @@
   margin-top: 10px;
 }
 
-.event-description-toggle {
-  background: none;
-  border: 1px solid white;
-  color: #fff;
-  font-size: 14px;
-  padding: 2px 5px;
-  cursor: pointer;
-  margin-bottom: 5px;
-  border-radius: 5px;
-}
+
 
 .event-description {
   font-size: 14px;
