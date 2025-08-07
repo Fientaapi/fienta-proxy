@@ -51,16 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         venue.className = "event-venue";
         venue.textContent = event.venue || "";
 
-        const linkWrap = document.createElement("div");
-        linkWrap.className = "event-link";
-        const link = document.createElement("a");
-        link.href = event.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = "Koupit vstupenku";
-        linkWrap.appendChild(link);
-
-        // Popis – skrytý na začátku
+        // Popis – skrytý на začátku
         const descriptionWrapper = document.createElement("div");
         descriptionWrapper.className = "event-description-wrapper";
 
@@ -82,16 +73,29 @@ document.addEventListener("DOMContentLoaded", () => {
         descriptionWrapper.appendChild(descriptionToggle);
         descriptionWrapper.appendChild(description);
 
-        // Poskládat vše dohromady
+        // Кнопка покупки через Fienta popup
+        const linkWrap = document.createElement("div");
+        linkWrap.className = "event-link";
+
+        const link = document.createElement("a");
+        link.href = "#";
+        link.textContent = "Koupit vstupenku";
+        link.setAttribute("data-fienta-popup", event.url);
+        link.addEventListener("click", (e) => {
+          e.preventDefault(); // Предотвратить переход по ссылке
+        });
+
+        linkWrap.appendChild(link);
+
+        // Сборка блока мероприятия
         content.appendChild(title);
         content.appendChild(date);
         if (event.venue) content.appendChild(venue);
-        content.appendChild(linkWrap);
         if (event.description) content.appendChild(descriptionWrapper);
+        content.appendChild(linkWrap);
 
         card.appendChild(img);
         card.appendChild(content);
-
         container.appendChild(card);
       });
     })
@@ -101,4 +105,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-console.log("version 46"); // potvrzení verze pro cache bust
+console.log("Fienta Events Script Loaded ✅");
