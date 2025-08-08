@@ -63,7 +63,7 @@
   margin-top: 10px;
 }
 
-.event-description-toggle {
+.event-buttons .event-description-toggle {
   background-color: transparent !important;
   color: white !important;
   border: 1px solid white !important;
@@ -81,7 +81,7 @@
   -moz-appearance: none;
 }
 
-.event-description-toggle:hover {
+.event-buttons .event-description-toggle:hover {
   background-color: #eedddd !important;
   color: #000 !important;
   border-color: #eedddd !important;
