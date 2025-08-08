@@ -63,6 +63,12 @@
   margin-top: 10px;
 }
 
+.event-description-toggle {
+  background-color: #00000000;
+    color: white !important;
+    border: 1px solid;
+}
+
 .event-description {
   font-size: 14px;
   color: #eedddd;
