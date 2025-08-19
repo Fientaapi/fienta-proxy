@@ -154,6 +154,9 @@
 
   .event-card {
     width: 310px;
-    background: #1F0F17;
+    background: #180F15;
+  }
+  #events-list {
+    background-color: #1F0E17;
   }
 }
