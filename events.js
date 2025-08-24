@@ -2,23 +2,71 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("events-list");
   container.innerHTML = "<p>Načítání akcí...</p>";
 
-  fetch("https://fienta-proxy-fientaapis-projects.vercel.app/api")
+  // Определяем язык пользователя
+  let userLang = navigator.language.split("-")[0].toLowerCase();
+  if (userLang === "uk") userLang = "ua"; // чтобы браузер uk → ua
+
+  // Поддерживаем только выбранные языки, иначе fallback на en
+  const supportedLangs = ["cs", "en", "ru", "ua"];
+  if (!supportedLangs.includes(userLang)) userLang = "en";
+
+  // Словарь переводов
+  const translations = {
+    cs: {
+      loading: "Načítání akcí...",
+      noEvents: "Žádné akce nebyly nalezeny.",
+      showMore: "Zobrazit více",
+      hide: "Skrýt",
+      buy: "Koupit vstupenku",
+      error: "Chyba při načítání akcí"
+    },
+    en: {
+      loading: "Loading events...",
+      noEvents: "No events found.",
+      showMore: "Show more",
+      hide: "Hide",
+      buy: "Buy ticket",
+      error: "Error loading events"
+    },
+    ru: {
+      loading: "Загрузка событий...",
+      noEvents: "События не найдены.",
+      showMore: "Показать больше",
+      hide: "Скрыть",
+      buy: "Купить билет",
+      error: "Ошибка при загрузке событий"
+    },
+    ua: {
+      loading: "Завантаження подій...",
+      noEvents: "Події не знайдено.",
+      showMore: "Показати більше",
+      hide: "Приховати",
+      buy: "Купити квиток",
+      error: "Помилка при завантаженні подій"
+    }
+  };
+
+  container.innerHTML = `<p>${translations[userLang].loading}</p>`;
+
+  fetch(`https://fienta-proxy-fientaapis-projects.vercel.app/api?locale=${userLang}`)
     .then((res) => {
-      if (!res.ok) throw new Error("Chyba sítě");
+      if (!res.ok) throw new Error(translations[userLang].error);
       return res.json();
     })
     .then((data) => {
       const events = data.events;
       if (!events || events.length === 0) {
-        container.innerHTML = "<p>Žádné akce nebyly nalezeny.</p>";
+        container.innerHTML = `<p>${translations[userLang].noEvents}</p>`;
         return;
       }
 
-      container.innerHTML = ""; // Vymazat načítací hlášku
+      container.innerHTML = ""; // очистить "Loading..."
 
       events.forEach((event) => {
         const eventDate = new Date(event.starts_at);
-        const formattedDate = eventDate.toLocaleString("cs-CZ", {
+
+        // Локализация даты
+        const formattedDate = eventDate.toLocaleString(userLang === "ua" ? "uk" : userLang, {
           day: "2-digit",
           month: "long",
           year: "numeric",
@@ -66,11 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const descriptionToggle = document.createElement("button");
         descriptionToggle.className = "event-description-toggle";
-        descriptionToggle.textContent = "Zobrazit více";
+        descriptionToggle.textContent = translations[userLang].showMore;
         descriptionToggle.addEventListener("click", () => {
           const isVisible = description.style.display === "block";
           description.style.display = isVisible ? "none" : "block";
-          descriptionToggle.textContent = isVisible ? "Zobrazit více" : "Skrýt";
+          descriptionToggle.textContent = isVisible
+            ? translations[userLang].showMore
+            : translations[userLang].hide;
         });
 
         const ticketButton = document.createElement("a");
@@ -79,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ticketButton.target = "_blank";
         ticketButton.rel = "noopener noreferrer";
         ticketButton.setAttribute("data-fienta-popup", event.url);
-        ticketButton.textContent = "Koupit vstupenku";
+        ticketButton.textContent = translations[userLang].buy;
 
         buttonsWrapper.appendChild(descriptionToggle);
         buttonsWrapper.appendChild(ticketButton);
@@ -98,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     })
     .catch((err) => {
-      container.innerHTML = `<p>Chyba při načítání akcí: ${err.message}</p>`;
+      container.innerHTML = `<p>${translations[userLang].error}: ${err.message}</p>`;
       console.error(err);
     });
 });
