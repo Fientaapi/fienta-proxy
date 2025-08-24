@@ -9,11 +9,19 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // Язык пользователя (по умолчанию — чешский "cs")
+  const locale = req.query.locale || 'cs';
+
   try {
-    const response = await fetch("https://fienta.com/api/v1/public/events?organizer=32694");
+    const response = await fetch(
+      `https://fienta.com/api/v1/public/events?organizer=32694&locale=${locale}`
+    );
     const data = await response.json();
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ error: "Ошибка при получении данных", details: err.message });
+    res.status(500).json({
+      error: "Ошибка при получении данных",
+      details: err.message,
+    });
   }
 }
