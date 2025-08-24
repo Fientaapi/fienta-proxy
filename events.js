@@ -1,16 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("events-list");
-  container.innerHTML = "<p>Načítání akcí...</p>";
 
-  // Определяем язык пользователя
-  let userLang = navigator.language.split("-")[0].toLowerCase();
-  if (userLang === "uk") userLang = "ua"; // чтобы браузер uk → ua
+  // --- Определяем язык из URL ---
+  let pathLang = window.location.pathname.split("/")[1].toLowerCase();
+  if (pathLang === "") pathLang = "cs"; // дефолтный язык (cs)
+  if (pathLang === "uk") pathLang = "ua"; // нормализуем uk → ua
 
-  // Поддерживаем только выбранные языки, иначе fallback на en
   const supportedLangs = ["cs", "en", "ru", "ua"];
-  if (!supportedLangs.includes(userLang)) userLang = "en";
+  let userLang = supportedLangs.includes(pathLang) ? pathLang : "cs";
 
-  // Словарь переводов
+  // --- Словарь переводов ---
   const translations = {
     cs: {
       loading: "Načítání akcí...",
@@ -48,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   container.innerHTML = `<p>${translations[userLang].loading}</p>`;
 
+  // --- Подгружаем события с API с учетом языка ---
   fetch(`https://fienta-proxy-fientaapis-projects.vercel.app/api?locale=${userLang}`)
     .then((res) => {
       if (!res.ok) throw new Error(translations[userLang].error);
@@ -65,21 +65,26 @@ document.addEventListener("DOMContentLoaded", () => {
       events.forEach((event) => {
         const eventDate = new Date(event.starts_at);
 
-        // Локализация даты
-        const formattedDate = eventDate.toLocaleString(userLang === "ua" ? "uk" : userLang, {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        // Локализация даты (ua → uk для toLocaleString)
+        const formattedDate = eventDate.toLocaleString(
+          userLang === "ua" ? "uk" : userLang,
+          {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }
+        );
 
         const card = document.createElement("div");
         card.className = "event-card";
 
         const img = document.createElement("img");
         img.className = "event-image";
-        img.src = event.image_url || "https://via.placeholder.com/280x160?text=Bez+obrázku";
+        img.src =
+          event.image_url ||
+          "https://via.placeholder.com/280x160?text=Bez+obrázku";
         img.alt = event.title;
 
         const content = document.createElement("div");
