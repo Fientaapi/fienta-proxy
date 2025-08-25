@@ -1,90 +1,83 @@
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("events-list");
+  container.innerHTML = "<p>Načítání akcí...</p>";
 
   // --- Определяем язык из URL ---
   let pathLang = window.location.pathname.split("/")[1].toLowerCase();
-  if (pathLang === "") pathLang = "cs"; // дефолтный язык (cs)
-  if (pathLang === "uk") pathLang = "ua"; // нормализуем uk → ua
+  if (pathLang === "") pathLang = "cs"; // дефолтный язык (чешский)
+
+  // Нормализация для Fienta
+  let apiLang = pathLang;
+  if (pathLang === "ua") apiLang = "uk"; // Fienta ждёт "uk" вместо "ua"
 
   const supportedLangs = ["cs", "en", "ru", "ua"];
   let userLang = supportedLangs.includes(pathLang) ? pathLang : "cs";
 
-  // --- Словарь переводов ---
-  const translations = {
+  // --- Словарь UI текста ---
+  const uiText = {
     cs: {
       loading: "Načítání akcí...",
       noEvents: "Žádné akce nebyly nalezeny.",
       showMore: "Zobrazit více",
       hide: "Skrýt",
-      buy: "Koupit vstupenku",
-      error: "Chyba při načítání akcí"
+      buyTicket: "Koupit vstupenku",
     },
     en: {
       loading: "Loading events...",
       noEvents: "No events found.",
       showMore: "Show more",
       hide: "Hide",
-      buy: "Buy ticket",
-      error: "Error loading events"
+      buyTicket: "Buy ticket",
     },
     ru: {
-      loading: "Загрузка событий...",
-      noEvents: "События не найдены.",
+      loading: "Загрузка мероприятий...",
+      noEvents: "Мероприятия не найдены.",
       showMore: "Показать больше",
       hide: "Скрыть",
-      buy: "Купить билет",
-      error: "Ошибка при загрузке событий"
+      buyTicket: "Купить билет",
     },
     ua: {
       loading: "Завантаження подій...",
       noEvents: "Події не знайдено.",
       showMore: "Показати більше",
-      hide: "Приховати",
-      buy: "Купити квиток",
-      error: "Помилка при завантаженні подій"
-    }
+      hide: "Сховати",
+      buyTicket: "Купити квиток",
+    },
   };
 
-  container.innerHTML = `<p>${translations[userLang].loading}</p>`;
+  container.innerHTML = `<p>${uiText[userLang].loading}</p>`;
 
-  // --- Подгружаем события с API с учетом языка ---
-  fetch(`https://fienta-proxy-fientaapis-projects.vercel.app/api?locale=${userLang}`)
+  // --- Запрос с языком ---
+  fetch(`https://fienta-proxy-fientaapis-projects.vercel.app/api?locale=${apiLang}`)
     .then((res) => {
-      if (!res.ok) throw new Error(translations[userLang].error);
+      if (!res.ok) throw new Error("Chyba sítě");
       return res.json();
     })
     .then((data) => {
       const events = data.events;
       if (!events || events.length === 0) {
-        container.innerHTML = `<p>${translations[userLang].noEvents}</p>`;
+        container.innerHTML = `<p>${uiText[userLang].noEvents}</p>`;
         return;
       }
 
-      container.innerHTML = ""; // очистить "Loading..."
+      container.innerHTML = ""; // очистить "loading"
 
       events.forEach((event) => {
         const eventDate = new Date(event.starts_at);
-
-        // Локализация даты (ua → uk для toLocaleString)
-        const formattedDate = eventDate.toLocaleString(
-          userLang === "ua" ? "uk" : userLang,
-          {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          }
-        );
+        const formattedDate = eventDate.toLocaleString(userLang, {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
 
         const card = document.createElement("div");
         card.className = "event-card";
 
         const img = document.createElement("img");
         img.className = "event-image";
-        img.src =
-          event.image_url ||
-          "https://via.placeholder.com/280x160?text=Bez+obrázku";
+        img.src = event.image_url || "https://via.placeholder.com/280x160?text=Bez+obrázku";
         img.alt = event.title;
 
         const content = document.createElement("div");
@@ -119,13 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const descriptionToggle = document.createElement("button");
         descriptionToggle.className = "event-description-toggle";
-        descriptionToggle.textContent = translations[userLang].showMore;
+        descriptionToggle.textContent = uiText[userLang].showMore;
         descriptionToggle.addEventListener("click", () => {
           const isVisible = description.style.display === "block";
           description.style.display = isVisible ? "none" : "block";
           descriptionToggle.textContent = isVisible
-            ? translations[userLang].showMore
-            : translations[userLang].hide;
+            ? uiText[userLang].showMore
+            : uiText[userLang].hide;
         });
 
         const ticketButton = document.createElement("a");
@@ -134,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ticketButton.target = "_blank";
         ticketButton.rel = "noopener noreferrer";
         ticketButton.setAttribute("data-fienta-popup", event.url);
-        ticketButton.textContent = translations[userLang].buy;
+        ticketButton.textContent = uiText[userLang].buyTicket;
 
         buttonsWrapper.appendChild(descriptionToggle);
         buttonsWrapper.appendChild(ticketButton);
@@ -145,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.description) content.appendChild(descriptionWrapper);
         content.appendChild(buttonsWrapper);
 
-        // Финальный card
         card.appendChild(img);
         card.appendChild(content);
 
@@ -153,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     })
     .catch((err) => {
-      container.innerHTML = `<p>${translations[userLang].error}: ${err.message}</p>`;
+      container.innerHTML = `<p>Chyba při načítání akcí: ${err.message}</p>`;
       console.error(err);
     });
 });
